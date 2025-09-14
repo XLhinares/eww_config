@@ -4,8 +4,10 @@ My custom widgets for [EWW](https://github.com/elkowar/eww).
 
 ## Description
 
-It's pretty much a column of widgets that appears on the right of my screen.
-It contains:
+It's pretty much a column of widgets that appears on the right of my screen.  
+I originally made it so I could turn off my computer in one click, and then added some more stuff, like the ability to control the music, the volume, and the luminosity of the computer.
+
+It contains the following widgets:
 - Date and time
 - Weather info
 - Music control

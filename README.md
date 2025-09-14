@@ -30,3 +30,7 @@ WEATHER_CITY=<the id of your city on openweathermap>
 
 - Install the `Iosevka Nerd Font` to have the proper icons.
 - Use cron jobs to update the weather.
+
+## Preview
+
+![Just a normal screenshot](https://github.com/XLhinares/eww_config/blob/main/images/example2.webp)

@@ -1,0 +1,47 @@
+;; VARIABLES
+(defpoll ICON 			:interval "5m" `scripts/weather_info --icon`)
+(defpoll TEMP 			:interval "5m" `scripts/weather_info --temp`)
+(defpoll HEX 			:interval "5m" `scripts/weather_info --hex`)
+(defpoll HUMIDITY		:interval "5m" `scripts/weather_info --humidity`)
+
+;; WIDGETS
+(defwidget weather []
+	(box 
+		:orientation "h" 
+		:space-evenly "true" 
+		:vexpand "false" 
+		:hexpand "true" 
+		:height 100
+		(box 
+			:class "box_tile_small" 
+			:vexpand "true" 
+			:hexpand "true"
+			(label 
+				:class "iconweather" 
+				:halign "center" 
+				:style "color: ${HEX};" 
+				:text ICON
+			)
+		)
+		(box 
+			:class "box_tile_small" 
+			:vexpand "true" 
+			:hexpand "true" 
+			(label 
+				:class "weather_figure" 
+				:halign "center" 
+				:text TEMP
+			)
+		)
+		(box 
+			:class "box_tile_small" 
+			:vexpand "true" 
+			:hexpand "true" 
+			(label 
+				:class "weather_figure" 
+				:halign "center" 
+				:text HUMIDITY
+			)
+		)
+	)
+)

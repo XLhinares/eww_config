@@ -1,0 +1,40 @@
+(defvar HOVER_LABEL false)
+
+(defwidget metric [label min value onchange]
+    (box :orientation "h"
+        :class "metric"
+        :space-evenly false
+        :hexpand true
+        :spacing 16
+        
+        ;; LABEL
+	    (eventbox 
+            :onhover "eww update HOVER_LABEL=true" 		
+            :onhoverlost "eww update HOVER_LABEL=false"
+            (box 
+                :class "label" label
+            )
+        )
+
+        ;; SCALE
+        (scale 
+            :hexpand true
+            :min {min == "" ? 0 : min}
+            :max 101
+            :active {onchange != ""}
+            :value {value == "" ? 0 : value}
+            :onchange onchange
+        )
+
+        ;; TOOLTIP
+        (revealer 
+            :transition "slideright" 
+            :reveal HOVER_LABEL         
+            :duration "550ms"
+            (box
+                :class "tooltip_text"
+                {(value == 100 ? 100.0 : round(value, 2)) + "%"}
+            )
+        )
+    )
+)

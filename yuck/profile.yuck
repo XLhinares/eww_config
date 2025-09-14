@@ -1,0 +1,29 @@
+;; VARIABLES
+(defpoll USER_NAME 		:interval "15m" `whoami`)
+(defpoll USER_QUOTE		:interval "15m" `scripts/date_info --quote`)
+
+;; WIDGETS
+(defwidget profile [] 
+	(button 
+		:class "box_tile" 
+		:valign "center" 
+		:height 100
+		:vexpand "false" 
+		:spacing -10 
+		:onclick `scripts/utils --eww-restart`
+		(box
+			:orientation "v" 
+			(label 
+				:class "user_name" 
+				:halign "center" 
+				:text USER_NAME
+			)
+			(label 
+				:class "user_message" 
+				:halign "center" 
+				:wrap true
+				:text USER_QUOTE
+			)
+		)
+	)	
+)

@@ -1,0 +1,57 @@
+;; VARIABLES
+(defpoll TIME 			:interval "1s" `date +%H:%M%p`)
+(defpoll TIME_HOUR 		:interval "1s" `date +%H`)
+(defpoll TIME_MINUTE 	:interval "1s" `date +%M`)
+(defpoll DATE 			:interval "15m" `date +%m/%d/%y`)
+(defpoll DATE_MONTH 	:interval "15m" `date +%m`)
+(defpoll DATE_DAY 		:interval "15m" `date +%d`)
+(defpoll DAY 			:interval "15m" `scripts/date_info --symbol`)
+
+;; WIDGETS
+(defwidget clock []
+	(box 
+		:orientation "h" 
+		:space-evenly "true" 
+		:height 100
+		:vexpand "false" 
+		:hexpand "true" 
+
+		(button 
+			:class "box_tile_small" 
+			:vexpand true 
+			:hexpand true 
+			:onclick `scripts/date_info --clock`
+			(box 
+				:orientation "v" 
+				(label 
+					:class "date" 
+					:text TIME_HOUR
+				)
+				(label 
+					:class "date" 
+					:text TIME_MINUTE
+				)
+		)
+		)
+		(box 
+			:class "box_tile_small" 
+			:orientation "v" 
+			(label 
+				:class "date" 
+				:text DATE_MONTH
+			)
+			(label 
+				:class "date"  
+				:text DATE_DAY
+			)
+		)
+		(box 
+			:class "box_tile_small" 
+			(label 
+				:class "date_day" 
+				:valign "center"
+				:text DAY
+			)
+		)
+	)
+)

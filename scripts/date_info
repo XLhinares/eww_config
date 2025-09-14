@@ -1,0 +1,139 @@
+#!/bin/bash
+
+CACHE_DIR="$HOME/.cache/eww/date"
+CACHE_DAY_SYMBOL=${CACHE_DIR}/day-symbol
+CACHE_DAY_QUOTE=${CACHE_DIR}/day-quote
+
+## Make cache dir
+if [[ ! -d "$CACHE_DIR" ]]; then
+	mkdir -p ${CACHE_DIR}
+fi
+
+day_en=`date +%A`
+current_hour=`date +%H`
+
+get_day_data() {
+
+    if [ "$day_en" == "Monday" ]; then
+        day_symbol="一"
+        day_quote=`get_weekday_hour_quote`
+    elif [ "$day_en" == "Tuesday" ]; then
+        day_symbol="二"
+        day_quote=`get_weekday_hour_quote`
+    elif [ "$day_en" == "Wednesday" ]; then
+        day_symbol="三"
+        day_quote=`get_weekday_hour_quote`
+    elif [ "$day_en" == "Thursday" ]; then
+        day_symbol="四"
+        day_quote=`get_weekday_hour_quote`
+    elif [ "$day_en" == "Friday" ]; then
+        day_symbol="五"
+        day_quote=`get_weekday_hour_quote`
+    elif [ "$day_en" == "Saturday" ]; then
+        day_symbol="六"
+        day_quote=`get_saturday_hour_quote`
+    elif [ "$day_en" == "Sunday" ]; then
+        day_symbol="日"
+        day_quote=`get_sunday_hour_quote`
+    fi;
+
+
+    echo "$day_symbol" > ${CACHE_DAY_SYMBOL}
+    echo "$day_quote" > ${CACHE_DAY_QUOTE}
+}
+
+get_weekday_hour_quote() {
+    if (( $(echo "$current_hour < 1" | bc -l) )); then
+        echo "Time to go to bed!"
+    elif (( $(echo "$current_hour < 2" | bc -l) )); then
+        echo "Time to go to bed, really!!"
+    elif (( $(echo "$current_hour < 6" | bc -l) )); then
+        echo "You should be asleep."
+    elif (( $(echo "$current_hour < 7" | bc -l) )); then
+        echo "Waking up early today?"
+    elif (( $(echo "$current_hour < 9" | bc -l) )); then
+        echo "Good morning!"
+    elif (( $(echo "$current_hour < 12" | bc -l) )); then
+        echo "Have a nice day!"
+    elif (( $(echo "$current_hour < 14" | bc -l) )); then
+        echo "Lunch time!"
+    elif (( $(echo "$current_hour < 18" | bc -l) )); then
+        echo "Have a nice day!"
+    elif (( $(echo "$current_hour < 19" | bc -l) )); then
+        echo "Time to work out?"
+    elif (( $(echo "$current_hour < 21" | bc -l) )); then
+        echo "Dinner time!"
+    elif (( $(echo "$current_hour < 23" | bc -l) )); then
+        echo "Time to chill!"
+    elif (( $(echo "$current_hour < 24" | bc -l) )); then
+        echo "Maybe go read a book?"
+    fi;
+}
+
+get_saturday_hour_quote() {
+    if (( $(echo "$current_hour < 1" | bc -l) )); then
+        echo "Time to go to bed!"
+    elif (( $(echo "$current_hour < 2" | bc -l) )); then
+        echo "Time to go to bed, really!!"
+    elif (( $(echo "$current_hour < 6" | bc -l) )); then
+        echo "You should be asleep."
+    elif (( $(echo "$current_hour < 8" | bc -l) )); then
+        echo "Waking up early today?"
+    elif (( $(echo "$current_hour < 12" | bc -l) )); then
+        echo "Good morning!"
+    elif (( $(echo "$current_hour < 14" | bc -l) )); then
+        echo "Lunch time!"
+    elif (( $(echo "$current_hour < 16" | bc -l) )); then
+        echo "Homework time..."
+    elif (( $(echo "$current_hour < 17" | bc -l) )); then
+        echo "Time to work out?"
+    elif (( $(echo "$current_hour < 19" | bc -l) )); then
+        echo "Have a nice day!"
+    elif (( $(echo "$current_hour < 21" | bc -l) )); then
+        echo "Dinner time!"
+    elif (( $(echo "$current_hour < 23" | bc -l) )); then
+        echo "Time to chill!"
+    elif (( $(echo "$current_hour < 24" | bc -l) )); then
+        echo "Maybe go read a book?"
+    fi;
+}
+
+get_sunday_hour_quote() {
+    if (( $(echo "$current_hour < 1" | bc -l) )); then
+        echo "Time to go to bed!"
+    elif (( $(echo "$current_hour < 2" | bc -l) )); then
+        echo "Time to go to bed, really!!"
+    elif (( $(echo "$current_hour < 6" | bc -l) )); then
+        echo "You should be asleep."
+    elif (( $(echo "$current_hour < 8" | bc -l) )); then
+        echo "Waking up early today?"
+    elif (( $(echo "$current_hour < 12" | bc -l) )); then
+        echo "Good morning!"
+    elif (( $(echo "$current_hour < 14" | bc -l) )); then
+        echo "Lunch time!"
+    elif (( $(echo "$current_hour < 16" | bc -l) )); then
+        echo "Homework time..."
+    elif (( $(echo "$current_hour < 17" | bc -l) )); then
+        echo "Time to work out?"
+    elif (( $(echo "$current_hour < 19" | bc -l) )); then
+        echo "Have a nice day!"
+    elif (( $(echo "$current_hour < 21" | bc -l) )); then
+        echo "Dinner time!"
+    elif (( $(echo "$current_hour < 23" | bc -l) )); then
+        echo "Time to chill!"
+    elif (( $(echo "$current_hour < 24" | bc -l) )); then
+        echo "Maybe go read a book?"
+    fi;
+}
+
+
+## Execute
+if [[ "$1" == "--getdata" ]]; then
+	get_day_data
+elif [[ "$1" == "--quote" ]]; then
+	cat ${CACHE_DAY_QUOTE}
+elif [[ "$1" == "--symbol" ]]; then
+	cat ${CACHE_DAY_SYMBOL}
+elif [[ "$1" == "--clock" ]]; then
+	gnome-clocks
+fi

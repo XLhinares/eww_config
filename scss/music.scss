@@ -1,0 +1,64 @@
+/** Music ***************************************/
+
+.box_tile_music {
+	background-color: $background_tile;
+	border-radius: 16px;
+	padding : 8px 8px 8px 8px;
+	margin : 8px 8px 8px 8px;
+	box-shadow: 4px 4px 2px 2px $shadow;
+}
+
+.album_art {
+	background-size: $width_corrected;
+	min-height: $width_corrected;
+	min-width: $width_corrected;
+	border-radius: 14px;
+	margin-top: 8px;
+}
+
+.song {
+	color: $foreground;
+	font-size : $font_size_M;
+	font-weight : bold;
+}
+
+.artist {
+	color: $foreground;
+	font-size : $font_size_M;
+	font-weight : normal;
+}
+
+.btn_prev, .btn_play, .btn_next {
+	font-family: Iosevka Nerd Font;
+}
+
+.btn_prev {
+	color: $foreground;
+	font-size : $font_size_L;
+	font-weight : normal;
+}
+
+.btn_play {
+	color: $foreground;
+	font-size : $font_size_XL;
+	font-weight : bold;
+}
+
+.btn_next {
+	color: $foreground;
+	font-size : $font_size_L;
+	font-weight : normal;
+}
+
+.music_bar scale trough highlight {
+	all: unset;
+	background-color: $accent;
+	border-radius: 8px;
+}
+.music_bar scale trough {
+	all: unset;
+	background-color: #3A404C;
+	border-radius: 8px;
+	min-height: 20px;
+	min-width: $width_corrected;
+}

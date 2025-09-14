@@ -1,0 +1,56 @@
+;; VARIABLES
+(defpoll VOLUME :interval "1s" `scripts/system_info --volume`)
+(defpoll BRIGHTNESS :interval "1s" `scripts/system_info --brightness`)
+(defvar BRIGHTNESS_MIN `scripts/system_info --brightness-min`)
+
+(include "./yuck/metric.yuck")
+
+;; WIDGETS
+(defwidget system []
+    (box 
+        :class "box_tile" 
+        (box 
+            :orientation "v" 
+            :space-evenly false 
+            :hexpand true
+            :spacing 16
+            (box :height 0)
+            (metric 
+                :label "VOL"
+                :value VOLUME
+                :min ""
+                :onchange "amixer set Master {}%"
+            )
+            (metric 
+                :label "LUM"
+                :value BRIGHTNESS
+                :min {BRIGHTNESS_MIN * 100}
+                :onchange "scripts/system_info --set-brightness {}"
+            )
+            (metric 
+                :label "RAM"
+                :value {EWW_RAM.used_mem_perc}
+                :onchange ""
+                :min ""
+            )
+            (metric 
+                :label "CPU"
+                :value {EWW_CPU.avg}
+                :onchange ""
+                :min ""
+            )
+                ;(metric 
+                ;    :label "💾"
+                ;   :value {EWW_GPU.used_mem_perc}
+                ;    :onchange ""
+            ; )
+            (metric 
+                :label "DSK"
+                :value {(1 - (EWW_DISK["/"].free / EWW_DISK["/"].total)) * 100}
+                :onchange ""
+                :min ""
+            )
+            (box :height 0)
+        )
+    )
+)

@@ -1,0 +1,43 @@
+;; WIDGETS
+(defwidget powerbuttons []
+	(box 
+		:orientation "h" 
+		:space-evenly true
+		(button 
+			:onclick `scripts/utils --system-logout`
+			(box
+				:class "box_tile_small" 
+				:vexpand true 
+				:hexpand true 
+				(label 
+					:class "btn_logout"  
+					:text ""
+				)
+			)
+		)
+		(button 
+			:onclick `scripts/utils --system-reboot`
+			(box
+				:class "box_tile_small" 
+				:vexpand true 
+				:hexpand true 
+				(label 
+					:class "btn_reboot" 
+					:text ""
+				)
+			)
+		)
+		(button 
+			:onclick `scripts/utils --system-poweroff`
+			(box
+				:class "box_tile_small" 
+				:vexpand true 
+				:hexpand true 
+				(label 
+					:class "btn_poweroff"  
+					:text ""
+				)
+			)
+		)
+	)
+)

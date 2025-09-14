@@ -1,0 +1,33 @@
+#!/bin/bash
+
+## Get Volume
+round_to_int() {
+    echo "scale=0; $1 / 1" | bc
+}
+
+## Get Brightness
+round_to_one_decimal() {
+    echo "scale=1; $1" | bc
+}
+
+## Get Brightness
+set_brightness() {
+	brightness=`echo "scale=2; $1 / 100" | bc`
+    xrandr --output HDMI-0 --brightness $brightness
+}
+
+
+## Execute accordingly
+if [[ "$1" == "--eww-restart" ]]; then
+	$(cd /home/xlhinares/.config/eww/ && make restart)
+elif [[ "$1" == "--system-logout" ]]; then
+	$(gnome-session-quit --logout --no-prompt)
+elif [[ "$1" == "--system-reboot" ]]; then
+	$(systemctl reboot)
+elif [[ "$1" == "--system-poweroff" ]]; then
+	$(systemctl poweroff)
+elif [[ "$1" == "--round" ]]; then
+	round_to_int $2
+elif [[ "$1" == "--round_decimal" ]]; then
+	round_to_one_decimal $2
+fi 

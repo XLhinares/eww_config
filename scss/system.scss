@@ -1,0 +1,28 @@
+/** SYSTEM ********************************************/
+
+.sidestuff slider {
+	all: unset;
+	color: #ffd5cd;
+}
+
+.label {
+	color: $foreground;
+	font-family: Iosevka Nerd Font;
+	font-weight : bold;
+	font-size: $font_size_M;
+}
+  
+.metric scale trough highlight {
+all: unset;
+background-color: $accent;
+color: #000000;
+border-radius: 10px;
+}
+
+.metric scale trough {
+all: unset;
+background-color: $background_light;
+border-radius: 50px;
+min-height: 12px;
+// min-width: 200px;
+}

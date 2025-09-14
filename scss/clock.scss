@@ -1,0 +1,15 @@
+/** CLOCK  ********************************************/
+
+.time, .date, .date_day {
+	color: $foreground;
+	font-size : $font_size_L;
+	font-weight : bold;
+}
+
+.time {
+	color: $accent;
+}
+
+.date_day {
+	font-size : $font_size_XL;
+}

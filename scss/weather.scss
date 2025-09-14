@@ -1,0 +1,19 @@
+/** Weather ***************************************/
+
+.iconweather {
+	font-family: Iosevka Nerd Font;
+	font-size : $font_size_XL;
+	font-weight : normal;
+}
+
+.weather_figure {
+	color : $foreground;
+	font-size : $font_size_L;
+	font-weight : bold;
+}
+
+.weather_label {
+	color : $foreground;
+	font-size : $font_size_M;
+	font-weight : bold;
+}

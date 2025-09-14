@@ -1,0 +1,68 @@
+// GLOBAL
+
+*{
+	all: unset;
+	font-family: feather;
+	font-family: Iosevka;
+}
+
+// SIZES
+
+$width_default: 300px;
+$width_corrected: 268px;
+
+// COLORS
+
+// Variable Color's
+$foreground: #BBBBBB;
+$background_tile: rgba($color: #252222, $alpha: 0.8);
+$background_light: #4e4e4e;
+$shadow: rgba($color: #131111, $alpha: 0.6);
+$accent: #D46389;
+
+// TEXT
+
+$font_size_XL: 50px;
+$font_size_L: 30px;
+$font_size_M: 20px;
+
+
+.tooltip_text {
+	color: $foreground;
+}
+
+// Generic window
+
+.box_tile {
+	background-color: $background_tile;
+	border-radius: 16px;
+	padding : 8px 24px 8px 24px;
+	margin : 8px 8px 8px 8px;
+	box-shadow: 4px 4px 2px 2px $shadow;
+}
+
+.box_tile_small {
+	background-color: $background_tile;
+	border-radius: 16px;
+	padding : 8px 8px 8px 8px;
+	margin : 8px 8px 8px 8px;
+	box-shadow: 4px 4px 2px 2px $shadow;
+}
+
+.box_tile_small_icon {
+	background-color: $background_tile;
+	border-radius: 16px;
+	padding : 8px 8px 8px 8px;
+	margin : 8px 8px 8px 8px;
+	box-shadow: 4px 4px 2px 2px $shadow;
+}
+
+@import "scss/clock";
+@import "scss/music";
+@import "scss/power_buttons.scss";
+@import "scss/profile.scss";
+@import "scss/system.scss";
+@import "scss/weather";
+
+/** EOF *************************************************/
+

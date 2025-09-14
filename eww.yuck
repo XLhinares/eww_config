@@ -1,0 +1,57 @@
+;; IMPORTS ********************************************************************
+
+(include "./yuck/profile.yuck")
+(include "./yuck/date.yuck")
+(include "./yuck/weather.yuck")
+(include "./yuck/music.yuck")
+(include "./yuck/system.yuck")
+(include "./yuck/power.yuck")
+
+;; VARIABLES ******************************************************************
+
+(defvar default_x -50)
+(defvar default_w 300)
+(defvar default_h 100)
+
+
+;; WINDOWS ********************************************************************
+
+(defwidget interface []
+	(box 
+		:orientation "v" 
+		:space-evenly false 
+		:vexpand false 
+		:hexpand true 
+		(profile)
+		(clock)
+		(weather)
+		(music)
+		(system)
+	)
+)
+
+;; profile
+(defwindow interface
+	:geometry (geometry
+		:x      -24
+		:y      24
+		:width  300
+		:height "100%"
+		:anchor "top right")
+	:stacking   "bg"
+	:windowtype "dock"
+	(interface)
+)
+
+;; powerbuttons
+(defwindow powerbuttons 
+	:geometry (geometry
+		:x      -24
+		:y      -48
+		:width  300
+		:height 100
+		:anchor "bottom right")
+	:stacking   "bg"
+	:windowtype "dock"
+	(powerbuttons)
+)

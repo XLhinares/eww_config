@@ -1,0 +1,132 @@
+;; VARIABLES
+
+(defpoll SONG       :interval "1s" `scripts/music_info --song`)
+(defpoll ARTIST     :interval "1s" `scripts/music_info --artist`)
+(defpoll STATUS     :interval "1s" `scripts/music_info --status`)
+(defpoll POSITION   :interval "1s" `scripts/music_info --position`)
+(defpoll COVER      :interval "1s" `scripts/music_info --cover`)
+
+
+(defvar HOVER_MUSIC false)
+(defvar HOVER_MUSIC_ART false)
+
+
+;; WIDGETS
+(defwidget music [] 
+	(eventbox 
+        :onhover "eww update HOVER_MUSIC=true" 		
+        :onhoverlost "eww update HOVER_MUSIC=false"
+        (box
+            :class "box_tile_music" 
+            :orientation "v" 
+            :space-evenly false 
+            :vexpand false 
+            :hexpand true
+            
+            ;; LABELS
+            (label 
+                :halign "center" 
+                :class "song" 
+                :wrap false  
+                :limit-width 50
+                :lines 1
+                :text SONG
+            )
+            (label 
+                :halign "center" 
+                :class "artist" 
+                :wrap false  
+                :limit-width 25
+                :text ARTIST
+            )
+            ;; CONTROLS
+            ;; Due to the font used (Iosevka Nerd Font),
+            ;; we use unicode characters for the buttons.
+            ;; This saves use the trouble of rendering icons.
+            (box 
+                :orientation "v" 
+                :space-evenly false 
+                :vexpand false 
+                :hexpand true
+                :valign "center"
+                (box 
+                    :orientation "h" 
+                    :spacing 10 
+                    :halign "center" 
+                    :space-evenly true 
+                    :vexpand false 
+                    :hexpand false 
+                    (button 
+                        :class "btn_prev" 
+                        :onclick "scripts/music_info --source" 
+                        "囹"
+                    )
+                    (button 
+                        :class "btn_prev" 
+                        :onclick "scripts/music_info --prev" 
+                        "玲" ;; Unicode character U+F9AD
+                    )
+                    (button 
+                        :class "btn_play" 
+                        :onclick "scripts/music_info --toggle" 
+                        STATUS
+                    )
+                    (button 
+                        :class "btn_next" 
+                        :onclick "scripts/music_info --next" 
+                        "怜";; Unicode character U+F9AC
+                    )
+                    (button 
+                        :class "btn_next" 
+                        :onclick "scripts/music_info --lyrics" 
+                        "喝"
+                    )
+                )
+                (box 
+                    :class "music_bar" 
+                    :halign "center" 
+                    :hexpand true
+                    (scale 
+                        :min 0 
+                        :max 101
+                        :hexpand true
+                        :active true 
+                        :value {POSITION == "" ? 0 : POSITION}
+                        :onchange "scripts/music_info --set-position {}"
+                    )
+                )
+            )
+
+            ;; ALBUM ART
+            (revealer 
+                :transition "slideup" 
+                :reveal HOVER_MUSIC         
+                :duration "550ms"
+                (eventbox
+                    :onclick "scripts/music_info --toggle"
+                    :onhover "eww update HOVER_MUSIC_ART=true" 		
+                    :onhoverlost "eww update HOVER_MUSIC_ART=false"
+                    (overlay
+                        (box
+                        :class "album_art" 
+                        :vexpand true 
+                        :hexpand true 
+                        :style "background-image: url('${COVER}');"
+                        )
+                        (revealer
+                            :transition "crossfade" 
+                            :reveal HOVER_MUSIC_ART         
+                            :duration "550ms"
+                            (box
+                                :vexpand true
+                                :hexpand true
+                                :class "btn_play"
+                                STATUS
+                            )
+                        )
+                    )
+                )
+            )
+        )
+    )
+)

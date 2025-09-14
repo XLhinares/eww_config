@@ -1,0 +1,51 @@
+#!/bin/bash
+
+BRIGHTNESS_MIN=0.05
+
+## Get Volume
+get_volume() {
+    ## Match 1 or 2 digits sounds according to the output of the front left speaker.
+    VOLUME=`amixer sget Master | grep -oP '(Front Left:[a-zA-Z0-9 ]*\[)\K[0-9]{1,2}'`
+    if [[ -z "$VOLUME" ]]; then
+        echo 0
+    else
+        echo "$VOLUME" | bc
+    fi
+}
+
+## Get Brightness
+get_brightness() {
+	brightness=`xrandr --verbose | awk '/Brightness/ { print $2; exit }'`
+    echo "scale=0; $brightness * 100 / 1" | bc
+}
+
+## Set the brightness to a value between 0.1 and 1.0
+## 
+## If the input is out of bounds, then it will be capped.
+## This is to prevent turning the screen fully black or white
+set_brightness() {
+    if (( $(echo "$1 < $BRIGHTNESS_MIN" | bc -l) )); then
+    xrandr --output HDMI-0 --brightness $BRIGHTNESS_MIN
+    elif (( $(echo "$1 > 1" | bc -l) )); then
+    xrandr --output HDMI-0 --brightness 1
+    else
+    xrandr --output HDMI-0 --brightness $1
+    fi 
+}
+
+set_brightness_from_percent() {
+	brightness=`echo "scale=2; $1 / 100" | bc`
+    set_brightness $brightness
+}
+
+
+## Execute accordingly
+if [[ "$1" == "--volume" ]]; then
+	get_volume
+elif [[ "$1" == "--brightness" ]]; then
+	get_brightness
+elif [[ "$1" == "--brightness-min" ]]; then
+	echo $BRIGHTNESS_MIN
+elif [[ "$1" == "--set-brightness" ]]; then
+	set_brightness_from_percent $2
+fi 

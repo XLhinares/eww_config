@@ -1,0 +1,148 @@
+#!/bin/bash
+
+## Get data
+MUSIC_PLAYER_INDEX=$(cat /tmp/music_index 2>/dev/null || echo 1)
+MUSIC_PLAYER="$(playerctl -l | head -n "$MUSIC_PLAYER_INDEX" | tail -n 1)"
+STATUS="$(playerctl -p $MUSIC_PLAYER status)"
+COVER="/tmp/.music_cover.jpg"
+MUSIC_DIR="$HOME/Music"
+
+
+## Get status
+get_status() {
+	if [[ $STATUS == *"Playing"* ]]; then
+		echo ""
+	else
+		echo "喇"
+	fi
+}
+
+## Switch to the next source
+switch_source() {
+	MUSIC_PLAYER_INDEX=$(($MUSIC_PLAYER_INDEX+1))
+	MUSIC_PLAYER_COUNT=$(playerctl -l | wc -l)
+	if (($MUSIC_PLAYER_COUNT < $MUSIC_PLAYER_INDEX)); then
+    	MUSIC_PLAYER_INDEX=1
+	fi
+	MUSIC_PLAYER=$(playerctl -l | head -n "$MUSIC_PLAYER_INDEX" | tail -n 1)
+	STATUS=$(playerctl -p $MUSIC_PLAYER status)
+
+	echo $MUSIC_PLAYER_COUNT
+	echo $MUSIC_PLAYER_INDEX
+	echo "$MUSIC_PLAYER_INDEX" > /tmp/music_index
+}
+
+## Get song
+get_song() {
+	song=$(playerctl -p $MUSIC_PLAYER metadata | grep -oP 'xesam:title[ ]*\K.*')
+	
+	if [[ -z "$song" ]]; then
+		echo "Offline"
+	else
+		echo "$song"
+	fi	
+}
+
+## Get artist
+get_artist() {
+	artist=$(playerctl -p $MUSIC_PLAYER metadata | grep -oP 'xesam:artist[ ]*\K.*')
+	
+	if [[ -z "$artist" ]]; then
+		echo "No music playing"
+	else
+		echo "$artist"
+	fi	
+}
+
+## Get time
+get_time() {
+	time=$(playerctl -p $MUSIC_PLAYER position)
+	if [[ -z "$time" ]]; then
+		echo 0
+	else
+		echo "$time"
+	fi	
+}
+
+get_duration() {
+	microseconds=$(playerctl -p $MUSIC_PLAYER metadata | grep -oP 'mpris:length[ ]*\K.*')
+	if [[ -z "$microseconds" ]]; then
+		echo 0
+	else
+		echo "scale=10; $microseconds / 1000000" | bc
+	fi	
+}
+
+get_position() {
+	time=$(get_time);
+	duration=$(get_duration);
+	if [[ -z "$time" ]]; then
+		echo 0
+	else
+		echo "scale=3; $time / $duration" | bc
+	fi	
+}
+
+## Get the position as an integer between 0 and 100.
+##
+## The "/ 1" ensures that the result is an integer
+get_position_percent() {
+	position=$(get_position);
+	echo "(100 * $position) / 1" | bc
+}
+
+set_position() {
+	echo "SETTING NEW POSITION: $1"
+	duration=$(get_duration);
+	new_position=$(echo "scale=3; $1 / 100 * $duration" | bc)
+	echo "$new_position / $duration"
+	playerctl -p $MUSIC_PLAYER position $new_position
+}
+
+## Get cover
+get_cover() {
+	ffmpeg -i `playerctl -p $MUSIC_PLAYER metadata | grep -oP 'mpris:artUrl[ ]*\K.*'` "${COVER}" -y &> /dev/null
+	STATUS=$?
+
+	# Check if the file has a embbeded album art
+	if [ "$STATUS" -eq 0 ];then
+		echo "$COVER"
+	else
+		echo "images/music.png"
+	fi
+}
+
+open_lyrics() {
+	TITLE=$(echo "$(get_song)" | tr ' ' +)
+	ARTIST=$(echo "$(get_artist)" | tr ' ' +)
+	firefox "https://duckduckgo.com/?q=$ARTIST+$TITLE+lyrics"
+}
+
+## Execute accordingly
+if [[ "$1" == "--song" ]]; then
+	get_song;
+elif [[ "$1" == "--artist" ]]; then
+	get_artist;
+elif [[ "$1" == "--status" ]]; then
+	get_status;
+elif [[ "$1" == "--time" ]]; then
+	get_time;
+elif [[ "$1" == "--duration" ]]; then
+	get_duration;
+elif [[ "$1" == "--position" ]]; then
+	get_position_percent;
+elif [[ "$1" == "--set-position" ]]; then
+	set_position $2;
+elif [[ "$1" == "--cover" ]]; then
+	get_cover;
+elif [[ "$1" == "--lyrics" ]]; then
+	open_lyrics;
+elif [[ "$1" == "--toggle" ]]; then
+	playerctl -p $MUSIC_PLAYER play-pause
+elif [[ "$1" == "--source" ]]; then
+	{ switch_source; get_cover; }
+elif [[ "$1" == "--next" ]]; then
+	{ playerctl -p $MUSIC_PLAYER next; get_cover; }
+elif [[ "$1" == "--prev" ]]; then
+	{ playerctl -p $MUSIC_PLAYER previous; get_cover; }
+fi

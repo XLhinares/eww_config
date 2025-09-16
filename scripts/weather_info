@@ -12,8 +12,8 @@ cache_weather_icon=${cache_dir}/weather-icon
 cache_weather_humidity=${cache_dir}/weather-humidity
 
 ## Weather data
-KEY=$(grep -oP 'WEATHER_API_KEY=\K.[A-Za-z0-9]*' .env)
-CITY=$(grep -oP 'WEATHER_CITY=\K.[A-Za-z0-9]*' .env)
+KEY=$(grep -oP 'WEATHER_API_KEY=\K.[A-Za-z0-9]*' ~/.config/eww/.env)
+CITY=$(grep -oP 'WEATHER_CITY=\K.[A-Za-z0-9]*' ~/.config/eww/.env)
 UNIT="metric"	# Available options : 'metric' or 'imperial'
 
 ## Make cache dir

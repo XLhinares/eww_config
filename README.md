@@ -35,4 +35,4 @@ WEATHER_CITY=<the id of your city on openweathermap>
 
 ## Preview
 
-![Just a normal screenshot](https://github.com/XLhinares/eww_config/blob/main/images/example2.webp "Example of desktop with this EWW config")
+![Just a normal screenshot](https://raw.githubusercontent.com/XLhinares/eww_config/main/images/example2.webp "Example of desktop with this EWW config")
